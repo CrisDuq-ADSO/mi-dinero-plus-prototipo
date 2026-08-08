@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metas de Ahorro – Mi Dinero+</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .goals-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    /* === Solo el encabezado "Nueva Meta" en verde agradable === */
+    .nueva-meta-header {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: white;
+      padding: 0.85rem 1.25rem;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .nueva-meta-header h3 {
+      color: white !important;
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .total-card {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 1.35rem 1.5rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .total-card .label {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+    .total-card .value {
+      font-size: 1.60rem;
+      font-weight: 700;
+    }
+
+    .goal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      transition: box-shadow 0.2s;
+    }
+    .goal-card:hover {
+      box-shadow: var(--shadow);
+    }
+    .goal-card.completed {
+      border-color: var(--success);
+      background: linear-gradient(to right, rgba(16,185,129,0.04), transparent);
+    }
+
+    .goal-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.9rem;
+    }
+    .goal-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+    }
+    .goal-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .goal-delete {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      opacity: 0.4;
+      transition: opacity 0.15s;
+      padding: 0.2rem;
+    }
+    .goal-delete:hover { opacity: 1; }
+
+    .goal-amounts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .goal-amount-item .label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.15rem;
+    }
+    .goal-amount-item .value {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .goal-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .completed-badge {
+      text-align: center;
+      background: #D1FAE5;
+      color: #065F46;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      margin-top: 0.5rem;
+    }
+    [data-theme="dark"] .completed-badge {
+      background: #064E3B;
+      color: #6EE7B7;
+    }
+
+    @media (max-width: 900px) {
+      .goals-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body data-page="metas">
+
+  <!-- Banner educativo -->
+  <div class="edu-banner">
+    ⚠️ Entorno de Simulación Educativa – No se utiliza dinero real
+    <button class="close-banner" aria-label="Cerrar">×</button>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar" id="navbar"></header>
+
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Asistente IA -->
+      <div class="ai-assistant" id="aiAssistant"></div>
+
+      <div class="goals-layout">
+
+        <!-- Formulario Nueva Meta -->
+        <div class="card">
+          <!-- Encabezado verde con "Nueva Meta" -->
+          <div class="nueva-meta-header">
+            <h3>Nueva Meta</h3>
+          </div>
+          
+          <div class="card-body">
+            <form id="goalForm" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="goalName">Nombre de la Meta</label>
+                <input type="text" id="goalName" class="form-control" placeholder="Ej. Cambio de llantas">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="goalTarget">Monto Objetivo ($)</label>
+                <input type="number" id="goalTarget" class="form-control" placeholder="0" min="1" step="1">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="goalDeadline">Fecha Límite</label>
+                <input type="date" id="goalDeadline" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="goalPriority">Prioridad</label>
+                <select id="goalPriority" class="form-control">
+                  <option value="">Seleccionar...</option>
+                  <option value="baja">Baja</option>
+                  <option value="media">Media</option>
+                  <option value="alta">Alta</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block" style="background: #059669;">
+                Crear Meta
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Lista de metas -->
+        <div>
+          <div class="total-card">
+            <div>
+              <div class="label">Total Ahorrado</div>
+              <div style="font-size:0.85rem;opacity:0.85;margin-top:0.15rem">Suma de todas tus metas</div>
+            </div>
+            <div class="value" id="totalAhorrado">$ 0</div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 style="font-size:1rem;"> Resumen de Ahorros</h3>
+            </div>
+            <div class="card-body" id="goalsList">
+              <!-- Se llena con JS -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script src="../assets/js/goals.js"></script>
+</body>
+</html>

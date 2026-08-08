@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil – Mi Dinero+</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ===== Tarjeta de perfil ===== */
+    #profileCard {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.75rem;
+    }
+    .profile-card-inner {
+      width: 100%;
+      max-width: 380px;
+      background: #1E40AF;
+      border-radius: 24px;
+      padding: 2rem 1.75rem 1.75rem;
+      color: white;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(30, 64, 175, 0.22);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .profile-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin: 0 auto;
+      transition: background 0.25s;
+    }
+
+    .btn-personalize {
+      margin-top: 0.75rem;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      border-radius: 999px;
+      padding: 0.4rem 1.1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-personalize:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    .avatar-controls {
+      display: none;
+      margin-top: 1rem;
+      background: rgba(0,0,0,0.22);
+      border-radius: 14px;
+      padding: 0.9rem;
+      position: relative;
+    }
+    .avatar-controls.show {
+      display: block;
+    }
+
+    .btn-close-controls {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 1.15rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px 6px;
+    }
+    .btn-close-controls:hover {
+      color: white;
+    }
+
+    .control-group {
+      margin-bottom: 0.75rem;
+    }
+    .control-group:last-child { margin-bottom: 0; }
+    .control-label {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      opacity: 0.85;
+      margin-bottom: 0.4rem;
+    }
+    .color-palette, .animal-palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+    .color-btn {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .color-btn:hover { transform: scale(1.15); }
+    .color-btn.active { border-color: white; box-shadow: 0 0 0 2px rgba(255,255,255,0.4); }
+
+    .animal-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      background: rgba(255,255,255,0.15);
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .animal-btn:hover { background: rgba(255,255,255,0.3); }
+    .animal-btn.active { border-color: white; background: rgba(255,255,255,0.35); }
+
+    .btn-reset-avatar {
+      margin-top: 0.75rem;
+      width: 100%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      border-radius: 10px;
+      padding: 0.45rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-reset-avatar:hover {
+      background: rgba(255,255,255,0.22);
+    }
+
+    .profile-name {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .role-selector {
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: center;
+    }
+    .role-selector select {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      border-radius: 999px;
+      padding: 0.35rem 2.2rem 0.35rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      appearance: none;
+      text-align: center;
+      text-align-last: center;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
+      background-size: 1rem;
+    }
+    .role-selector select option {
+      color: #0F172A;
+      background: white;
+      text-align: left;
+    }
+
+    .profile-company {
+      font-size: 0.85rem;
+      opacity: 0.85;
+      margin-bottom: 0.15rem;
+    }
+    .profile-email {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .edu-progress-box {
+      background: rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 1rem;
+    }
+    .edu-progress-title {
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      opacity: 0.8;
+      margin-bottom: 0.6rem;
+    }
+    .edu-progress-circle {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 0.5rem;
+    }
+    .edu-progress-circle svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .circle-bg {
+      fill: none;
+      stroke: rgba(255,255,255,0.2);
+      stroke-width: 3;
+    }
+    .circle-fill {
+      fill: none;
+      stroke: #34D399;
+      stroke-width: 3;
+      stroke-linecap: round;
+      transition: stroke-dasharray 0.6s ease;
+    }
+    .circle-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .edu-level {
+      font-size: 0.85rem;
+      font-weight: 600;
+      opacity: 0.95;
+    }
+
+    /* Menú de secciones */
+    .profile-menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .profile-menu-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .profile-menu-card:hover {
+      box-shadow: var(--shadow);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .profile-menu-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .profile-menu-card h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.15rem;
+    }
+    .profile-menu-card p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* ===== Actividad en 3 columnas ===== */
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .activity-column {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .activity-column-header {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .activity-column-body {
+      max-height: 380px;
+      overflow-y: auto;
+    }
+    .activity-item {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-title {
+      font-weight: 600;
+      font-size: 0.88rem;
+      margin-bottom: 0.15rem;
+    }
+    .activity-msg {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    .activity-time {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+    .empty-mini {
+      padding: 2rem 1rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Colores transparentes */
+    .activity-column.transacciones {
+      background: rgba(59, 130, 246, 0.10);
+      border-color: rgba(59, 130, 246, 0.25);
+    }
+    .activity-column.transacciones .activity-column-header {
+      background: rgba(59, 130, 246, 0.12);
+      border-bottom-color: rgba(59, 130, 246, 0.2);
+    }
+
+    .activity-column.metas {
+      background: rgba(16, 185, 129, 0.10);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+    .activity-column.metas .activity-column-header {
+      background: rgba(16, 185, 129, 0.12);
+      border-bottom-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .activity-column.deudas {
+      background: rgba(239, 68, 68, 0.10);
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+    .activity-column.deudas .activity-column-header {
+      background: rgba(239, 68, 68, 0.12);
+      border-bottom-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .btn-back {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.45rem 0.9rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .btn-back:hover { background: var(--bg-body); }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .settings-item:last-child { border-bottom: none; }
+    .settings-item label { font-weight: 500; font-size: 0.95rem; }
+    .settings-item .desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #cbd5e1;
+      border-radius: 26px;
+      transition: 0.25s;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.25s;
+    }
+    input:checked + .slider { background: var(--accent); }
+    input:checked + .slider:before { transform: translateX(22px); }
+
+    /* Estilo del botón de ojo (igual que login) */
+    .input-group .toggle-password {
+      position: absolute;
+      right: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.05rem;
+      padding: 0.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .input-group .toggle-password:hover {
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 800px) {
+      .activity-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="perfil">
+
+  <div class="edu-banner">
+    ⚠️ Entorno de Simulación Educativa – No se utiliza dinero real
+    <button class="close-banner" aria-label="Cerrar">×</button>
+  </div>
+
+  <header class="navbar" id="navbar"></header>
+
+  <main class="main-content">
+    <div class="container" style="max-width:960px">
+
+      <div id="sectionMain">
+        <div id="profileCard"></div>
+
+        <div class="profile-menu">
+          <div class="profile-menu-card" data-section="activity">
+            <div class="profile-menu-icon" style="background:#DBEAFE;color:#1D4ED8">🔔</div>
+            <div>
+              <h4>Centro de Actividad</h4>
+              <p>Historial de movimientos y notificaciones</p>
+            </div>
+          </div>
+          <div class="profile-menu-card" data-section="security">
+            <div class="profile-menu-icon" style="background:#FEE2E2;color:#DC2626">🔒</div>
+            <div>
+              <h4>Seguridad y Privacidad</h4>
+              <p>Contraseña, correo y datos de cuenta</p>
+            </div>
+          </div>
+          <div class="profile-menu-card" data-section="settings">
+            <div class="profile-menu-icon" style="background:#D1FAE5;color:#059669">⚙️</div>
+            <div>
+              <h4>Configuración de Simulación</h4>
+              <p>Moneda, IA, animaciones y reinicio</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="sectionActivity" class="hidden">
+        <div class="section-header">
+          <button class="btn-back">← Volver</button>
+          <h2 style="font-size:1.35rem;margin:0">Centro de Actividad Financiera</h2>
+        </div>
+        <p class="text-muted mb-3">Historial de las actividades realizadas durante tu simulación.</p>
+        <div id="activityList"></div>
+      </div>
+
+      <div id="sectionSecurity" class="hidden">
+        <div class="section-header">
+          <button class="btn-back">← Volver</button>
+          <h2 style="font-size:1.35rem;margin:0">Seguridad y Privacidad</h2>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header"><h3 style="font-size:1rem">Mis Datos</h3></div>
+          <div class="card-body">
+            <div class="settings-item">
+              <div><label>Nombre completo</label><div class="desc" id="displayName">—</div></div>
+            </div>
+            <div class="settings-item">
+              <div><label>Correo electrónico</label><div class="desc" id="currentEmailDisplay">—</div></div>
+            </div>
+            <div class="settings-item">
+              <div><label>Empresa</label><div class="desc">Meta Autos Medellín</div></div>
+            </div>
+            <p class="text-xs text-muted mt-2">Tus datos se utilizan únicamente dentro del entorno de simulación educativa.</p>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header"><h3 style="font-size:1rem">Cambiar Contraseña</h3></div>
+          <div class="card-body">
+            <form id="changePassForm">
+              <div class="form-group">
+                <label class="form-label">Contraseña actual</label>
+                <div class="input-group">
+                  <input type="password" id="currentPass" class="form-control" placeholder="Contraseña actual">
+                  <button type="button" class="toggle-password" onclick="togglePass(this)">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nueva contraseña</label>
+                <div class="input-group">
+                  <input type="password" id="newPass" class="form-control" placeholder="Nueva contraseña">
+                  <button type="button" class="toggle-password" onclick="togglePass(this)">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confirmar nueva contraseña</label>
+                <div class="input-group">
+                  <input type="password" id="confirmNewPass" class="form-control" placeholder="Repite la nueva contraseña">
+                  <button type="button" class="toggle-password" onclick="togglePass(this)">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3 style="font-size:1rem">Cambiar Correo Electrónico</h3></div>
+          <div class="card-body">
+            <form id="changeEmailForm">
+              <div class="form-group">
+                <label class="form-label">Nuevo correo</label>
+                <input type="email" id="newEmail" class="form-control" placeholder="nuevo@correo.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confirmar nuevo correo</label>
+                <input type="email" id="confirmNewEmail" class="form-control" placeholder="Repite el correo">
+              </div>
+              <button type="submit" class="btn btn-primary">Actualizar correo</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div id="sectionSettings" class="hidden">
+        <div class="section-header">
+          <button class="btn-back">← Volver</button>
+          <h2 style="font-size:1.35rem;margin:0">Configuración de Simulación</h2>
+        </div>
+        <p class="text-muted mb-3">Personaliza tu experiencia educativa dentro de Mi Dinero+.</p>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="settings-item">
+              <div>
+                <label>Moneda</label>
+                <div class="desc">Solo cambia el símbolo utilizado en la simulación</div>
+              </div>
+              <select id="settingCurrency" class="form-control" style="width:120px">
+                <option value="COP">COP</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+            <div class="settings-item">
+              <div>
+                <label>Nivel educativo</label>
+                <div class="desc">Modifica el tipo de consejos del Asistente IA</div>
+              </div>
+              <select id="settingLevel" class="form-control" style="width:140px">
+                <option value="basico">Básico</option>
+                <option value="intermedio">Intermedio</option>
+                <option value="avanzado">Avanzado</option>
+              </select>
+            </div>
+            <div class="settings-item">
+              <div>
+                <label>Asistente Financiero </label>
+                <div class="desc">Activa o desactiva los consejos automáticos</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingAI" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="settings-item">
+              <div>
+                <label>Animaciones</label>
+                <div class="desc">Activa o desactiva las animaciones de la plataforma</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingAnimations" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="settings-item">
+              <div>
+                <label>Tema actual</label>
+                <div class="desc">El cambio se realiza desde la barra superior</div>
+              </div>
+              <span id="currentThemeLabel" class="badge badge-info">Modo Claro</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-color:#FECACA">
+          <div class="card-body">
+            <div class="settings-item" style="border:none;padding:0">
+              <div>
+                <label style="color:var(--danger)">Reiniciar simulación</label>
+                <div class="desc">Elimina todos los registros creados durante esta práctica educativa</div>
+              </div>
+              <button id="btnResetSimulation" class="btn btn-danger btn-sm">Reiniciar Simulación</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script src="../assets/js/profile.js"></script>
+  <script>
+    // Toggle de contraseña con iconos de Font Awesome (igual que login)
+    function togglePass(button) {
+      const input = button.parentElement.querySelector('input');
+      const icon = button.querySelector('i');
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+  </script>
+</body>
+</html>

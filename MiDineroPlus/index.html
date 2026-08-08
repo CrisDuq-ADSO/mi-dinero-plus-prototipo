@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Dinero+ | Cargando...</title>
+  <!-- 1. Enlace al archivo de estilos global -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- CDN de FontAwesome para el icono de la splash screen -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* Estilos específicos para la pantalla de carga utilizando las variables de style.css */
+    .splash-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: var(--bg-body);
+      transition: background-color var(--transition);
+      text-align: center;
+      padding: 20px;
+    }
+
+    .brand-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 3rem 2rem;
+      box-shadow: var(--shadow-lg);
+      max-width: 400px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      background-color: var(--bg-body);
+      border-radius: var(--radius-lg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-icon {
+      color: var(--primary);
+      font-size: 2.5rem;
+    }
+
+    .logo-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 26px;
+      height: 26px;
+      background-color: var(--accent);
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 11px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+    }
+
+    /* Spinner animado usando variables de color del proyecto */
+    .spinner-bar {
+      width: 45px;
+      height: 45px;
+      border: 4px solid var(--border);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1.5rem;
+    }
+
+    .loading-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Estructura semántica con splash screen básica -->
+  <main class="splash-container">
+    <div class="brand-card">
+      <div class="logo-wrapper">
+        <i class="fa-solid fa-car logo-icon"></i>
+        <div class="logo-badge">
+          <i class="fa-solid fa-arrow-trend-up"></i>
+        </div>
+      </div>
+      <h1 class="brand-title">Mi Dinero+</h1>
+      <p class="brand-subtitle">Simulador de Educación Financiera</p>
+
+      <div class="spinner-bar"></div>
+      <span class="loading-text">Cargando aplicación...</span>
+    </div>
+  </main>
+
+  <!-- 2. Script para verificar sesión y redireccionar -->
+  <script>
+    // Recuperar tema preferido del usuario para evitar destellos de luz/oscuridad
+    const savedTheme = localStorage.getItem('md_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    // Ejecutar la redirección
+    (function () {
+      // Verificar la existencia de la sesión en localStorage (y sessionStorage por compatibilidad con storage.js)
+      const session = localStorage.getItem('md_user') || sessionStorage.getItem('md_user');
+
+      // Pequeño retardo controlado de 1000ms para mostrar la pantalla de carga
+      setTimeout(() => {
+        if (session) {
+          window.location.replace('views/dashboard.html');
+        } else {
+          window.location.replace('views/login.html');
+        }
+      }, 1000);
+    })();
+  </script>
+</body>
+
+</html>

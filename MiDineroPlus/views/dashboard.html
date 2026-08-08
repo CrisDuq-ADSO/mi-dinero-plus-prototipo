@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tablero Principal – Mi Dinero+</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.15rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .metric-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .metric-value.positive { color: #10B981; }
+    .metric-value.negative { color: #EF4444; }
+
+    /* === Colores específicos por tarjeta === */
+
+    /* Balance → Azul */
+    .metric-card.balance .metric-value {
+      color: #3B82F6;
+    }
+
+    /* Ahorro → Verde */
+    .metric-card.ahorro .metric-value {
+      color: #10B981;
+    }
+
+    /* Deuda → Rojo */
+    .metric-card.deuda .metric-value {
+      color: #EF4444;
+    }
+
+    /* Progreso de Meta → Morado */
+    .metric-card.progreso .metric-value {
+      color: #8B5CF6;
+    }
+
+    .metric-card.progreso .progress-bar {
+      background: #8B5CF6;
+    }
+
+    /* Barra de progreso de Resumen de Deudas en ROJO */
+    .card.deudas .progress-bar {
+      background: #EF4444 !important;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-bottom {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</head>
+<body data-page="dashboard">
+
+  <!-- Banner educativo -->
+  <div class="edu-banner">
+    ⚠️ Entorno de Simulación Educativa – No se utiliza dinero real
+    <button class="close-banner" aria-label="Cerrar">×</button>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar" id="navbar"></header>
+
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Saludo -->
+      <div class="mb-3">
+        <h1 id="greeting" style="font-size:1.75rem;margin-bottom:0.25rem;">¡Hola!</h1>
+        <p class="text-muted">Bienvenido a tu panel de control de simulación.</p>
+      </div>
+
+      <!-- Métricas -->
+      <div class="metrics-grid">
+
+        <!-- Balance -->
+        <div class="metric-card balance">
+          <div class="metric-label">Balance de Ingresos y Gastos</div>
+          <div class="metric-value" id="metricBalance">$ 0</div>
+        </div>
+
+        <!-- Ahorro -->
+        <div class="metric-card ahorro">
+          <div class="metric-label">Ahorro Total</div>
+          <div class="metric-value positive" id="metricAhorro">$ 0</div>
+        </div>
+
+        <!-- Deuda -->
+        <div class="metric-card deuda">
+          <div class="metric-label">Deuda Pendiente</div>
+          <div class="metric-value" id="metricDeuda">$ 0</div>
+        </div>
+
+        <!-- Progreso de Meta -->
+        <div class="metric-card progreso">
+          <div class="metric-label">Progreso de Meta</div>
+          <div class="metric-value" id="metricProgreso">0%</div>
+          <div class="progress mt-1">
+            <div class="progress-bar" id="metricProgresoBar" style="width:0%"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Grid inferior -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;" class="dashboard-bottom">
+
+        <!-- Transacciones Recientes -->
+        <div class="card transacciones" style="grid-column:1 / -1;">
+          <div class="card-header">
+            <h3 style="font-size:1rem;">Transacciones Recientes</h3>
+            <a href="transacciones.html" style="color: #3B82F6; font-weight: 600; font-size: 0.875rem;">Ver todas →</a>
+          </div>
+          <div class="card-body" id="recentTransactions"></div>
+        </div>
+
+        <!-- Resumen de Deudas -->
+        <div class="card deudas">
+          <div class="card-header">
+            <h3 style="font-size:1rem;">Resumen de Deudas</h3>
+            <a href="deudas.html" style="color: #EF4444; font-weight: 600; font-size: 0.875rem;">Gestionar →</a>
+          </div>
+          <div class="card-body" id="debtsSummary"></div>
+        </div>
+
+        <!-- Resumen de Metas -->
+        <div class="card metas">
+          <div class="card-header">
+            <h3 style="font-size:1rem;">Resumen de Metas</h3>
+            <a href="metas.html" style="color: #10B981; font-weight: 600; font-size: 0.875rem;">Gestionar →</a>
+          </div>
+          <div class="card-body" id="goalsSummary"></div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+</body>
+</html>

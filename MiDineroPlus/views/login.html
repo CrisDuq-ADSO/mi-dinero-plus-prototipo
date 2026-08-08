@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Dinero+ | Iniciar sesión</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      transition: background-color 0.3s ease;
+    }
+
+    .logo-title {
+      font-family: 'Poppins', system-ui, sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    /* ========== MODO OSCURO ========== */
+    [data-theme="dark"] body {
+      background-color: #0f172a !important;
+    }
+
+    [data-theme="dark"] .login-card {
+      background-color: #1e293b !important;
+    }
+
+    [data-theme="dark"] .login-card h2 {
+      color: #f8fafc !important;
+    }
+
+    [data-theme="dark"] .login-card p,
+    [data-theme="dark"] .login-card label {
+      color: #94a3b8 !important;
+    }
+
+    [data-theme="dark"] .login-card input {
+      background-color: #0f172a !important;
+      border-color: #334155 !important;
+      color: #f1f5f9 !important;
+    }
+
+    [data-theme="dark"] .login-card input::placeholder {
+      color: #64748b !important;
+    }
+
+    [data-theme="dark"] .bottom-text {
+      color: #94a3b8 !important;
+    }
+
+    [data-theme="dark"] .bottom-text a {
+      color: #34d399 !important;
+    }
+
+    [data-theme="dark"] .theme-btn {
+      background-color: rgba(255,255,255,0.18);
+      color: #f1f5f9;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+
+  <div class="w-full max-w-md">
+    <div class="login-card bg-white rounded-3xl shadow-2xl overflow-hidden">
+      
+      <!-- ========== ENCABEZADO ========== -->
+      <div class="bg-gradient-to-b from-blue-700 to-blue-900 px-6 pt-5 pb-8 text-white">
+        
+        <!-- Fila superior: botón tema + badge -->
+        <div class="flex items-center justify-between mb-6">
+          <button id="themeToggle" 
+                  class="theme-btn w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-all border border-white/20"
+                  title="Cambiar tema">
+            <i id="themeIcon" class="fa-solid fa-moon text-base"></i>
+          </button>
+
+          <div class="px-3 py-1.5 bg-white/15 text-[11px] rounded-full flex items-center gap-1.5 border border-white/25">
+            <i class="fa-solid fa-graduation-cap text-[10px]"></i>
+            <span class="font-medium tracking-wide">SIMULACIÓN EDUCATIVA</span>
+          </div>
+        </div>
+
+        <!-- Logo + textos centrados -->
+        <div class="flex flex-col items-center text-center">
+          <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-md mb-3">
+            <div class="relative">
+              <i class="fa-solid fa-car text-blue-600 text-3xl"></i>
+              <div class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-green-400 rounded-full flex items-center justify-center shadow-sm">
+                <i class="fa-solid fa-arrow-trend-up text-white text-[10px]"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[28px] logo-title text-white leading-none">
+            Mi Dinero+
+          </div>
+          
+          <div class="text-blue-200 text-sm mt-1.5 font-medium">
+            Meta Autos Medellín
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== FORMULARIO ========== -->
+      <div class="p-8">
+        <h2 class="text-2xl font-bold text-center mb-1 text-gray-900">Acceso a la Plataforma</h2>
+        <p class="text-center text-gray-500 text-sm mb-6">Ingresa tus datos para continuar</p>
+
+        <form id="loginForm" class="space-y-5">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Nombre Completo</label>
+            <input type="text" id="fullName" placeholder="Nombre y Apellido" 
+                   class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500 transition-all">
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Correo Electrónico</label>
+            <input type="email" id="email" placeholder="Usuario@dominio.com" 
+                   class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500 transition-all">
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Contraseña</label>
+            <div class="relative">
+              <input type="password" id="password" placeholder="Digite su contraseña" 
+                     class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500 pr-12 transition-all">
+              <button type="button" onclick="togglePassword(this)" class="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-eye text-lg"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-green-500 hover:bg-green-600 transition-all text-white font-semibold py-3.5 rounded-2xl text-lg mt-2">
+            INGRESAR
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <p class="bottom-text text-center mt-5 text-sm text-gray-500">
+      ¿No tienes cuenta? <a href="registro.html" class="text-green-600 font-semibold hover:underline">Crear cuenta</a>
+    </p>
+  </div>
+
+  <!-- Scripts del proyecto -->
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+
+  <script>
+    function togglePassword(button) {
+      const input = button.parentElement.querySelector('input');
+      input.type = input.type === 'password' ? 'text' : 'password';
+      button.innerHTML = input.type === 'text' 
+        ? '<i class="fa-solid fa-eye-slash"></i>' 
+        : '<i class="fa-solid fa-eye"></i>';
+    }
+
+    // ========== MODO DÍA / NOCHE ==========
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const html = document.documentElement;
+
+    const savedTheme = localStorage.getItem('md_theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('md_theme', next);
+      updateThemeIcon(next);
+    });
+
+    function updateThemeIcon(theme) {
+      if (theme === 'dark') {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+      } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+      }
+    }
+
+    // ========== LOGIN CON VALIDACIÓN ==========
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // Validar que ningún campo esté vacío
+      if (!fullName) {
+        alert('Por favor ingresa tu Nombre Completo');
+        document.getElementById('fullName').focus();
+        return;
+      }
+
+      if (!email) {
+        alert('Por favor ingresa tu Correo Electrónico');
+        document.getElementById('email').focus();
+        return;
+      }
+
+      if (!password) {
+        alert('Por favor ingresa tu Contraseña');
+        document.getElementById('password').focus();
+        return;
+      }
+
+      // Si todo está completo, continuar con el login
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.innerHTML = 'Ingresando...';
+      btn.disabled = true;
+
+      const result = Auth.login({ fullName, email, password });
+
+      if (result.success) {
+        window.location.href = 'dashboard.html';
+      } else {
+        alert(result.message || 'Error al iniciar sesión');
+        btn.innerHTML = 'INGRESAR';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
