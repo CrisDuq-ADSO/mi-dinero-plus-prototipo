@@ -5,8 +5,6 @@ desarrollada para el personal de Meta Autos Medellín. Permite practicar
 hábitos básicos de administración del dinero mediante registros simulados,
 sin operar con dinero real.
 
-![Vista previa](assets/Img/preview.png)
-
 > Este repositorio contiene el **prototipo estático** del frontend (HTML5,
 > CSS3 y JavaScript Vanilla), que define el contrato visual, la accesibilidad
 > y la experiencia de usuario (UX/UI) del sistema. La versión de producción
